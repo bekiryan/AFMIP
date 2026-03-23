@@ -35,3 +35,5 @@ fnsipid_samples.csv
 *.csv
 *.parquet
 *.zip
+
+.claude
