@@ -1,0 +1,12 @@
+azure-functions>=1.17.0
+pandas>=2.0.0
+numpy>=1.24.0
+pyarrow>=12.0.0
+yfinance>=0.2.30
+lxml>=4.9.0
+alpaca-py>=0.30.0
+newsapi-python>=0.2.7
+azure-storage-blob>=12.19.0
+azure-identity>=1.15.0
+python-dotenv>=1.0.0
+rich>=13.6.0

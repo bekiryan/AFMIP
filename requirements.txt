@@ -1,0 +1,28 @@
+# Core data
+pandas>=2.0.0
+numpy>=1.24.0
+pyarrow>=12.0.0
+
+# Hugging Face / FNSPID
+datasets>=2.14.0
+huggingface_hub>=0.17.0
+
+# Finance data
+yfinance>=0.2.30
+lxml>=4.9.0
+alpaca-py>=0.30.0
+
+# Azure
+azure-storage-blob>=12.19.0
+azure-identity>=1.15.0
+
+# News APIs
+newsapi-python>=0.2.7
+
+# Claude Agent SDK
+claude-agent-sdk>=0.1.0
+
+# Utilities
+python-dotenv>=1.0.0
+tqdm>=4.66.0
+rich>=13.6.0

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebSearch",
+      "Bash(pip list:*)",
+      "Bash(python3:*)",
+      "Bash(unzip:*)",
+      "Bash(.venv/bin/python:*)",
+      "Bash(.venv/bin/pip install:*)",
+      "Bash(python:*)",
+      "Bash(/Users/bekiryan/Projects/AFMIP/.venv/bin/python -c \"from src.data.loader import load_alpaca_prices, load_newsapi_articles; print\\('Imports OK'\\)\")",
+      "Bash(/Users/bekiryan/Projects/AFMIP/.venv/bin/python scripts/build_stock_dataset.py --tickers AAPL,MSFT,GOOG --start 2024-01-01 --end 2025-01-01)",
+      "Bash(/Users/bekiryan/Projects/AFMIP/.venv/bin/python scripts/build_news_dataset.py --newsapi-only --newsapi-tickers AAPL,MSFT,GOOG)"
+    ]
+  }
+}

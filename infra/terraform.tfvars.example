@@ -1,0 +1,9 @@
+# Copy to terraform.tfvars and adjust as needed
+project_name = "afmip"
+location     = "eastus"
+environment  = "dev"
+
+# API keys (pass via CLI: terraform apply -var="alpaca_api_key=..." or use TF_VAR_ env vars)
+# alpaca_api_key    = ""
+# alpaca_secret_key = ""
+# newsapi_key       = ""
