@@ -8,6 +8,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "~> 3.0"
     }
+    random = {
+      source  = "hashicorp/random"
+      version = "~> 3.6"
+    }
   }
 }
 
@@ -30,4 +34,15 @@ resource "azurerm_resource_group" "afmip" {
     environment = var.environment
     managed_by  = "terraform"
   }
+}
+
+resource "random_string" "storage_suffix" {
+  length  = 6
+  upper   = false
+  special = false
+}
+
+locals {
+  storage_account_name    = var.storage_account_name != "" ? var.storage_account_name : "${var.project_name}${var.environment}${random_string.storage_suffix.result}"
+  ml_storage_account_name = var.ml_storage_account_name != "" ? var.ml_storage_account_name : "${var.project_name}${var.environment}ml${random_string.storage_suffix.result}"
 }

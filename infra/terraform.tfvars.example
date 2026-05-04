@@ -3,6 +3,25 @@ project_name = "afmip"
 location     = "eastus"
 environment  = "dev"
 
+# Storage account names are globally unique.
+# Leave empty to generate a name like afmipdevabc123.
+storage_account_name = ""
+ml_storage_account_name = ""
+
+# Some student/free subscriptions have Dynamic VM quota 0 and cannot create
+# Azure Functions Consumption plans. Keep these false unless your subscription
+# allows Function Apps.
+enable_functions    = false
+enable_data_factory = false
+
+# Azure ML workspace has no compute charge by itself.
+# Azure ML compute is created with min nodes = 0; jobs can still cost money.
+enable_azure_ml            = true
+enable_azure_ml_compute    = true
+azure_ml_workspace_name    = "afmip-ml-workspace"
+azure_ml_compute_size      = "Standard_DS3_v2"
+azure_ml_compute_max_nodes = 1
+
 # API keys (pass via CLI: terraform apply -var="alpaca_api_key=..." or use TF_VAR_ env vars)
 # alpaca_api_key    = ""
 # alpaca_secret_key = ""
