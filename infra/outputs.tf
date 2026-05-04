@@ -31,27 +31,52 @@ output "datalake_features_url" {
   value       = "https://${azurerm_storage_account.afmip.name}.blob.core.windows.net/${azurerm_storage_container.features.name}"
 }
 
+output "datalake_models_url" {
+  description = "URL for the models container"
+  value       = "https://${azurerm_storage_account.afmip.name}.blob.core.windows.net/${azurerm_storage_container.models.name}"
+}
+
+output "datalake_exports_url" {
+  description = "URL for the exports container"
+  value       = "https://${azurerm_storage_account.afmip.name}.blob.core.windows.net/${azurerm_storage_container.exports.name}"
+}
+
 output "function_app_url" {
   description = "URL of the Function App"
-  value       = "https://${azurerm_linux_function_app.afmip.default_hostname}"
+  value       = var.enable_functions ? "https://${azurerm_linux_function_app.afmip[0].default_hostname}" : null
 }
 
 output "function_app_name" {
   description = "Name of the Function App"
-  value       = azurerm_linux_function_app.afmip.name
+  value       = var.enable_functions ? azurerm_linux_function_app.afmip[0].name : null
 }
 
 output "pipeline_trigger_url" {
   description = "Manual trigger URL for the data pipeline"
-  value       = "https://${azurerm_linux_function_app.afmip.default_hostname}/api/run-pipeline"
+  value       = var.enable_functions ? "https://${azurerm_linux_function_app.afmip[0].default_hostname}/api/run-pipeline" : null
 }
 
 output "data_factory_name" {
   description = "Name of the Azure Data Factory"
-  value       = azurerm_data_factory.afmip.name
+  value       = var.enable_data_factory ? azurerm_data_factory.afmip[0].name : null
 }
 
 output "data_factory_id" {
   description = "ID of the Azure Data Factory"
-  value       = azurerm_data_factory.afmip.id
+  value       = var.enable_data_factory ? azurerm_data_factory.afmip[0].id : null
+}
+
+output "azure_ml_workspace_name" {
+  description = "Name of the Azure ML workspace"
+  value       = var.enable_azure_ml ? azurerm_machine_learning_workspace.afmip[0].name : null
+}
+
+output "azure_ml_compute_name" {
+  description = "Name of the Azure ML compute cluster"
+  value       = var.enable_azure_ml && var.enable_azure_ml_compute ? azurerm_machine_learning_compute_cluster.cpu[0].name : null
+}
+
+output "azure_ml_storage_account_name" {
+  description = "Name of the non-HNS Storage Account used by Azure ML"
+  value       = var.enable_azure_ml ? azurerm_storage_account.ml[0].name : null
 }

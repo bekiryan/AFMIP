@@ -1,7 +1,7 @@
 # ── Storage Account (Data Lake Gen2) ──────────────────────────────────────────
 
 resource "azurerm_storage_account" "afmip" {
-  name                     = "${var.project_name}${var.environment}store"
+  name                     = local.storage_account_name
   resource_group_name      = azurerm_resource_group.afmip.name
   location                 = azurerm_resource_group.afmip.location
   account_tier             = "Standard"
@@ -28,6 +28,18 @@ resource "azurerm_storage_container" "datasets" {
 
 resource "azurerm_storage_container" "features" {
   name                  = "afmip-features"
+  storage_account_name  = azurerm_storage_account.afmip.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "models" {
+  name                  = "afmip-models"
+  storage_account_name  = azurerm_storage_account.afmip.name
+  container_access_type = "private"
+}
+
+resource "azurerm_storage_container" "exports" {
+  name                  = "afmip-exports"
   storage_account_name  = azurerm_storage_account.afmip.name
   container_access_type = "private"
 }

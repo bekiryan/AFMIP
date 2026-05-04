@@ -1,6 +1,7 @@
 # ── App Service Plan (Consumption / Free Tier) ────────────────────────────────
 
 resource "azurerm_service_plan" "afmip" {
+  count               = var.enable_functions ? 1 : 0
   name                = "${var.project_name}-${var.environment}-plan"
   resource_group_name = azurerm_resource_group.afmip.name
   location            = azurerm_resource_group.afmip.location
@@ -13,10 +14,11 @@ resource "azurerm_service_plan" "afmip" {
 # ── Linux Function App (Python 3.11) ─────────────────────────────────────────
 
 resource "azurerm_linux_function_app" "afmip" {
+  count               = var.enable_functions ? 1 : 0
   name                = "${var.project_name}-${var.environment}-func"
   resource_group_name = azurerm_resource_group.afmip.name
   location            = azurerm_resource_group.afmip.location
-  service_plan_id     = azurerm_service_plan.afmip.id
+  service_plan_id     = azurerm_service_plan.afmip[0].id
 
   storage_account_name       = azurerm_storage_account.afmip.name
   storage_account_access_key = azurerm_storage_account.afmip.primary_access_key

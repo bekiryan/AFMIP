@@ -16,16 +16,14 @@ Disable schedule:
 
 import argparse
 import logging
-import os
 
 from azure.ai.ml import MLClient
 from azure.ai.ml.entities import JobSchedule, RecurrenceTrigger, RecurrencePattern
 from azure.ai.ml.constants import TimeZone
-from azure.identity import AzureCliCredential
 from dotenv import load_dotenv
 
 from src.ml.azure_job import (
-    get_ml_client,
+    get_client,
     ensure_compute,
     get_environment,
     EXPERIMENT_NAME,
@@ -50,17 +48,17 @@ def create_schedule(client: MLClient):
     job = command(
         code="./",
         command=(
-            "python -m src.ml.train --model rf "
-            "--features-path ${inputs.features_path}"
+            "python -m src.ml.train --horizon all "
+            "--gold-path ${inputs.gold_path} --rebuild-features"
         ),
         environment=env,
         compute=ensure_compute(client),
         experiment_name=EXPERIMENT_NAME,
         display_name="afmip-daily-retrain",
         inputs={
-            "features_path": Input(
+            "gold_path": Input(
                 type=AssetTypes.URI_FILE,
-                path="azureml://datastores/workspaceblobstore/paths/afmip/datasets/features.parquet",
+                path="azureml://datastores/workspaceblobstore/paths/afmip/datasets/gold_dataset.csv",
             ),
         },
         outputs={
@@ -114,7 +112,7 @@ def main():
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-    client = get_ml_client()
+    client = get_client()
 
     if args.status:
         show_status(client)

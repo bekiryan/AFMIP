@@ -16,6 +16,8 @@ Usage:
 """
 
 import argparse
+import warnings
+warnings.filterwarnings("ignore")
 import json
 import logging
 from datetime import datetime, timedelta, timezone
@@ -25,7 +27,12 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import accuracy_score, roc_auc_score
 
-from src.ml.features import FEATURE_COLS, TARGET_COLS, HORIZON_LABELS
+from src.ml.gold_adapter import (
+    ALL_FEATURE_COLS as FEATURE_COLS,
+    ALL_TARGET_COLS as TARGET_COLS,
+    HORIZON_LABELS,
+    ensure_prepared_features,
+)
 from src.ml.train import load_model, train_all_horizons
 
 logger = logging.getLogger(__name__)
@@ -228,11 +235,18 @@ def main():
                         help="Retrain degraded models automatically")
     parser.add_argument("--lookback",      type=int, default=30)
     parser.add_argument("--features-path", default="data/datasets/features.parquet")
+    parser.add_argument("--gold-path",     default="data/datasets/gold_dataset.csv")
+    parser.add_argument("--rebuild-features", action="store_true")
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
-    df = pd.read_parquet(args.features_path)
+    features_path = ensure_prepared_features(
+        features_path=args.features_path,
+        gold_path=args.gold_path,
+        rebuild=args.rebuild_features,
+    )
+    df = pd.read_parquet(features_path)
     df["date"] = pd.to_datetime(df["date"])
     logger.info(f"Loaded features: {df.shape}")
 
